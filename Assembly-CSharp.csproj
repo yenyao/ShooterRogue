@@ -36,8 +36,10 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Script\Player\movement.cs" />
      <Compile Include="Assets\Script\Camera\followPlayer.cs" />
+     <Compile Include="Assets\Script\Player\movement.cs" />
+     <Compile Include="Assets\Script\Gun\gunInteraction.cs" />
+     <Compile Include="Assets\Script\Gun\bullet.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.16f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

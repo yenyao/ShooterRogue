@@ -21,6 +21,7 @@ public class movement : MonoBehaviour
     }
 
     private void handleMovement() {
+        print(playerMovement);
         rb.MovePosition(rb.position + playerMovement * moveSpeed * Time.fixedDeltaTime);
     }
 
