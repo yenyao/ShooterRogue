@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class movement : MonoBehaviour
 {
-    public float moveSpeed;
-    public Rigidbody2D rb;
-    public Camera cam;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Camera cam;
     private Vector2 playerMovement;
     private Vector2 mousePos;
 
@@ -21,7 +21,6 @@ public class movement : MonoBehaviour
     }
 
     private void handleMovement() {
-        print(playerMovement);
         rb.MovePosition(rb.position + playerMovement * moveSpeed * Time.fixedDeltaTime);
     }
 

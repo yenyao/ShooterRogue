@@ -4,29 +4,60 @@ using UnityEngine;
 
 public class gunInteraction : MonoBehaviour
 {
-    public Transform firePoint;
-    public GameObject bulletPrefab;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private GameObject bulletPrefab;
     private bool canFire = true;
-    public float fireRate;
-    private float time;
-
-    public float bulletForce = 20f;
+    private bool isReloading = false;
+    [SerializeField] private float fireRate;
+    [SerializeField] private float reloadRate;
+    private float firedTime;
+    private float reloadTime;
+    private int currentAmmo;
+    [SerializeField] private int maxMagazineAmmo = 10;
+    [SerializeField] private int totalAmmo = 50;
+    [SerializeField] private float bulletForce = 20f;
+    private UIManager _uimanager;
+    void Start() {
+        currentAmmo = maxMagazineAmmo;
+        _uimanager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading);
+    }
     void Update() {
         handleFireRate();
-        if(Input.GetButtonDown("Fire1") && canFire) {
-            Shoot();
+        if(currentAmmo <= 0) canFire = false;
+        if(Input.GetButtonDown("Fire1") && canFire && !isReloading) {
+            shoot();
+        }
+        if(Input.GetButtonDown("Reload") && !isReloading) {
+            isReloading = true;
+            canFire = false;
+            _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading);
+            StartCoroutine(reload());
         }
     }
     void handleFireRate() {
-        time += Time.deltaTime;
+        firedTime += Time.deltaTime;
         float timeToFire = 1 / fireRate;
-        if(time >= timeToFire) canFire = true;
+        if(firedTime >= timeToFire) canFire = true;
     }
-    void Shoot() {
+
+    void shoot() {
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
         bulletRB.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
+        currentAmmo--;
+        _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading);
         canFire = false;
-        time = 0;
+        firedTime = 0;
+    }
+
+    IEnumerator reload() {
+        yield return new WaitForSeconds(reloadRate);
+        var diffAmmo = maxMagazineAmmo - currentAmmo;
+        totalAmmo -= diffAmmo;
+        currentAmmo = maxMagazineAmmo;
+        isReloading = false;
+        _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading);
+        canFire = true;
     }
 }
