@@ -1,8 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class gunInteraction : MonoBehaviour
+public class GunController : MonoBehaviour
 {
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bulletPrefab;
@@ -22,36 +21,21 @@ public class gunInteraction : MonoBehaviour
         _uimanager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading);
     }
-    void Update() {
-        handleFireRate();
-        if(currentAmmo <= 0) canFire = false;
-        if(Input.GetButtonDown("Fire1") && canFire && !isReloading) {
-            shoot();
-        }
-        if(Input.GetButtonDown("Reload") && !isReloading) {
-            isReloading = true;
-            canFire = false;
-            _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading);
-            StartCoroutine(reload());
-        }
-    }
-    void handleFireRate() {
-        firedTime += Time.deltaTime;
-        float timeToFire = 1 / fireRate;
-        if(firedTime >= timeToFire) canFire = true;
-    }
 
-    void shoot() {
+    public IEnumerator shoot() {
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
         bulletRB.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
         currentAmmo--;
-        _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading);
         canFire = false;
-        firedTime = 0;
+        _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading);
+        yield return new WaitForSeconds(fireRate);
+        canFire = true;
     }
 
-    IEnumerator reload() {
+    public IEnumerator reload() {
+        isReloading = true;
+        _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading);
         yield return new WaitForSeconds(reloadRate);
         var diffAmmo = maxMagazineAmmo - currentAmmo;
         totalAmmo -= diffAmmo;
@@ -59,5 +43,22 @@ public class gunInteraction : MonoBehaviour
         isReloading = false;
         _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading);
         canFire = true;
+    }
+    public void throwGun() {
+        Rigidbody2D gunRB = gameObject.AddComponent<Rigidbody2D>();
+        gunRB.gravityScale = 0;
+        gunRB.drag = 5;
+        gunRB.angularDrag = 0;
+        BoxCollider2D gunCollider = gameObject.AddComponent<BoxCollider2D>();
+        PhysicsMaterial2D mat = Resources.Load("Bouncy", typeof(PhysicsMaterial2D)) as PhysicsMaterial2D;
+        gunCollider.sharedMaterial = mat;
+        gunRB.velocity = firePoint.up * bulletForce;
+    }
+
+    public bool getCanFire() {
+        return canFire;
+    }
+    public bool getIsReloading() {
+        return isReloading;
     }
 }

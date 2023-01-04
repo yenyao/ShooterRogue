@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Timeline", "Unity.Tim
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Services.Core", "Unity.Services.Core.csproj", "{fb687b2c-359b-e307-dc8c-f7f3ac447395}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{82fd2609-bfc6-cf84-b4da-66715b2ab7f7}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Services.Core.Environments", "Unity.Services.Core.Environments.csproj", "{37ba3e08-7092-22f4-7537-05aef640368c}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Services.Core.Internal", "Unity.Services.Core.Internal.csproj", "{e202075a-6221-a882-9db8-ade1640e381b}"
@@ -52,8 +54,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.2D.Tilemap.Extras", "Unity.2D.Tilemap.Extras.csproj", "{d3b4e683-69c6-a886-4ec5-772062b02cac}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Services.Core.Networking", "Unity.Services.Core.Networking.csproj", "{a84ac725-b7d5-833a-f848-81c7e7cd5f3e}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{82fd2609-bfc6-cf84-b4da-66715b2ab7f7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.InternalAPIEngineBridge.001", "Unity.InternalAPIEngineBridge.001.csproj", "{fcd2b699-e656-0aa8-657d-36893fa51031}"
 EndProject
@@ -152,6 +152,8 @@ Global
 		{325756b7-0775-dbc9-4e21-5ada9a246e7a}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{fb687b2c-359b-e307-dc8c-f7f3ac447395}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{fb687b2c-359b-e307-dc8c-f7f3ac447395}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82fd2609-bfc6-cf84-b4da-66715b2ab7f7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82fd2609-bfc6-cf84-b4da-66715b2ab7f7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37ba3e08-7092-22f4-7537-05aef640368c}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{37ba3e08-7092-22f4-7537-05aef640368c}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{e202075a-6221-a882-9db8-ade1640e381b}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -178,8 +180,6 @@ Global
 		{d3b4e683-69c6-a886-4ec5-772062b02cac}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{a84ac725-b7d5-833a-f848-81c7e7cd5f3e}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{a84ac725-b7d5-833a-f848-81c7e7cd5f3e}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82fd2609-bfc6-cf84-b4da-66715b2ab7f7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82fd2609-bfc6-cf84-b4da-66715b2ab7f7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{fcd2b699-e656-0aa8-657d-36893fa51031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{fcd2b699-e656-0aa8-657d-36893fa51031}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{febd4e5a-3fce-030f-001f-7dab3edba460}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
