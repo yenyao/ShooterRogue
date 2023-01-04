@@ -48,7 +48,7 @@ public class GunController : MonoBehaviour
         Rigidbody2D gunRB = gameObject.AddComponent<Rigidbody2D>();
         gunRB.gravityScale = 0;
         gunRB.drag = 5;
-        gunRB.angularDrag = 0;
+        gunRB.angularDrag = 10;
         BoxCollider2D gunCollider = gameObject.AddComponent<BoxCollider2D>();
         PhysicsMaterial2D mat = Resources.Load("Bouncy", typeof(PhysicsMaterial2D)) as PhysicsMaterial2D;
         gunCollider.sharedMaterial = mat;
