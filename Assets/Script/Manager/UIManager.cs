@@ -1,14 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using TMPro;
 
 public class UIManager : MonoBehaviour
 {
     public TextMeshProUGUI _ammoText;
-    public void updateAmmo(int currentAmmo, int maxAmmo, bool isReloading) {
-        string ammoState = currentAmmo.ToString() + "/" + maxAmmo.ToString();
+    public TextMeshProUGUI _equipText;
+    public void updateAmmo(int currentAmmo, int maxAmmo, bool isReloading, bool isGunEquipped) {
+        string ammoState = currentAmmo.ToString() + " | " + maxAmmo.ToString();
         if(isReloading) ammoState = "Reloading";
+        if(!isGunEquipped) ammoState = "";
         _ammoText.SetText(ammoState);
+    }
+
+    public void updateInteraction(bool equip) {
+        string interactionText = "Press E to equip";
+        if(!equip) interactionText = "";
+        _equipText.SetText(interactionText);
     }
 }

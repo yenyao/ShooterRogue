@@ -9,25 +9,51 @@ public class PlayerController : MonoBehaviour
     private Vector2 playerMovement;
     private Vector2 mousePos;
     private GameObject equippedGun;
+    private GameObject gun;
     private GunController gunController;
+    private bool isGunEquipped;
+    private bool canGunFire;
+    private bool isGunReloading;
+    private bool isEquipabble;
+
     void Start() {
-        equippedGun = GameObject.FindGameObjectWithTag("Gun");
-        gunController = equippedGun.GetComponent<GunController>();
+        if(GameObject.FindGameObjectWithTag("equippedGun")) {
+            equippedGun = GameObject.FindGameObjectWithTag("equippedGun");
+            gunController = equippedGun.GetComponent<GunController>();
+        }
+        if(GameObject.FindGameObjectWithTag("Gun")) {
+            gun = GameObject.FindGameObjectWithTag("Gun");
+            gunController = gun.GetComponent<GunController>();
+        }
+        if(equippedGun) isGunEquipped = true;
     }
 
     void Update()
     {
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         playerMovement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-
-        if(Input.GetButtonDown("Fire1") && gunController.getCanFire() && !gunController.getIsReloading()) {
+        canGunFire = isGunEquipped && gunController.getCanFire();
+        isGunReloading = isGunEquipped && !gunController.getIsReloading();
+        isEquipabble = gunController.getIsEquippable();
+        if(Input.GetButtonDown("Fire1") && canGunFire && isGunReloading) {
             StartCoroutine(gunController.shoot());
         }
-        if(Input.GetButtonDown("Reload") && !gunController.getIsReloading()) {
+        if(Input.GetButtonDown("Reload") && isGunReloading) {
             StartCoroutine(gunController.reload());
         }
         if(Input.GetButtonDown("Throw")) {
-            gunController.throwGun();
+            StartCoroutine(gunController.throwGun());
+            equippedGun.tag = "Gun";
+            isGunEquipped = false;
+            gun = equippedGun;
+            equippedGun = null;
+        }
+        if(Input.GetButtonDown("Equip") && isEquipabble) {
+            gunController.equip();
+            isGunEquipped = true;
+            equippedGun = gun;
+            gun.tag = "equippedGun";
+            gun = null;
         }
     }
     void FixedUpdate() {

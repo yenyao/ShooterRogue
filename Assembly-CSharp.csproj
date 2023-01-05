@@ -37,12 +37,12 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Script\Manager\UIManager.cs" />
+     <Compile Include="Assets\Script\Manager\GameManager.cs" />
      <Compile Include="Assets\Script\Camera\followPlayer.cs" />
      <Compile Include="Assets\Script\Gun\GunController.cs" />
      <Compile Include="Assets\Script\Gun\bullet.cs" />
-     <Compile Include="Assets\Script\Player\PlayerController.cs" />
      <Compile Include="Assets\Script\Enemy\EnemyController.cs" />
-     <Compile Include="Assets\Script\Manager\GameManager.cs" />
+     <Compile Include="Assets\Script\Player\PlayerController.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
