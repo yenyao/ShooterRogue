@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Script\Manager\UIManager.cs" />
+     <Compile Include="Assets\Script\Helper.cs" />
      <Compile Include="Assets\Script\Manager\GameManager.cs" />
      <Compile Include="Assets\Script\Camera\followPlayer.cs" />
      <Compile Include="Assets\Script\Gun\GunController.cs" />

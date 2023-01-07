@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Camera cam;
+    [SerializeField] private GameObject gunPrefab;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float throwStrength;
     private Vector2 playerMovement;
@@ -15,17 +16,36 @@ public class PlayerController : MonoBehaviour
     private bool canGunFire;
     private bool isGunReloading;
     private bool isEquipabble;
+    private Coroutine shootRoutine;
+    private Coroutine reloadRoutine;
+    private string interactableName;
+    private UIManager _uimanager;
 
     void Start() {
-        if(GameObject.FindGameObjectWithTag("equippedGun")) {
-            equippedGun = GameObject.FindGameObjectWithTag("equippedGun");
-            gunController = equippedGun.GetComponent<GunController>();
-        }
-        if(GameObject.FindGameObjectWithTag("Gun")) {
-            gun = GameObject.FindGameObjectWithTag("Gun");
+        _uimanager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        shootRoutine = null;
+        reloadRoutine = null;
+        // if(GameObject.FindGameObjectWithTag("equippedGun")) {
+        //     equippedGun = GameObject.FindGameObjectWithTag("equippedGun");
+        //     gunController = equippedGun.GetComponent<GunController>();
+        // }
+        // if(GameObject.FindGameObjectWithTag("Gun")) {
+        //     gun = GameObject.FindGameObjectWithTag("Gun");
+        //     gunController = gun.GetComponent<GunController>();
+        // }
+        Transform gunPosition = gameObject.transform.Find("GunPosition");
+        if(gunPosition.childCount > 0) {
+            gun = gunPosition.GetChild(0).gameObject;
+            // equippedGun = gun;
             gunController = gun.GetComponent<GunController>();
         }
-        if(equippedGun) isGunEquipped = true;
+        isGunEquipped = true;
+        // if(!gameObject.transform.Find("GunPosition").GetChild(0).gameObject) {
+        //     print("hell");
+        //     gun = GameObject.FindGameObjectWithTag("Gun");
+        //     gunController = gun.GetComponent<GunController>();
+        // }
+        // if(equippedGun) isGunEquipped = true;
     }
 
     void Update()
@@ -33,27 +53,24 @@ public class PlayerController : MonoBehaviour
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         playerMovement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         canGunFire = isGunEquipped && gunController.getCanFire();
-        isGunReloading = isGunEquipped && !gunController.getIsReloading();
+        // print(canGunFire);
+        isGunReloading = isGunEquipped && gunController.getIsReloading();
         isEquipabble = gunController.getIsEquippable();
-        if(Input.GetButtonDown("Fire1") && canGunFire && isGunReloading) {
-            StartCoroutine(gunController.shoot());
+        _uimanager.updateStates(canGunFire, isGunReloading, isEquipabble);
+        // print(!isGunReloading);
+        if(Input.GetButtonDown("Fire1") && canGunFire && !isGunReloading) {
+            shootRoutine = StartCoroutine(gunController.shoot());
         }
-        if(Input.GetButtonDown("Reload") && isGunReloading) {
-            StartCoroutine(gunController.reload());
+        if(Input.GetButtonDown("Reload") && !isGunReloading) {
+            reloadRoutine = StartCoroutine(gunController.reload());
         }
         if(Input.GetButtonDown("Throw")) {
+            if(gunController.getIsReloading()) {
+                StopCoroutine(reloadRoutine);
+            }
             StartCoroutine(gunController.throwGun());
-            equippedGun.tag = "Gun";
-            isGunEquipped = false;
             gun = equippedGun;
             equippedGun = null;
-        }
-        if(Input.GetButtonDown("Equip") && isEquipabble) {
-            gunController.equip();
-            isGunEquipped = true;
-            equippedGun = gun;
-            gun.tag = "equippedGun";
-            gun = null;
         }
     }
     void FixedUpdate() {
@@ -69,5 +86,12 @@ public class PlayerController : MonoBehaviour
         Vector2 lookDir = mousePos - rb.position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
         rb.rotation = angle;
+    }
+
+    public void setInteractableName(string tag) {
+        interactableName = tag;
+    }
+    public void setIsGunEquipped(bool isGunEquipped) {
+        this.isGunEquipped = isGunEquipped;
     }
 }

@@ -11,10 +11,20 @@ public class EnemyController : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
+    void Update() {
+        if(health <= 0) {
+            Destroy(gameObject);
+        }
+    }
+
     void OnCollisionEnter2D(Collision2D collision) {
-        print(collision.gameObject.name);
         if(collision.gameObject.tag == "Gun") {
             knockback(collision.gameObject.transform.position);
+        }
+        if(collision.gameObject.tag == "Bullet") {
+            float damage = collision.gameObject.GetComponent<bullet>().getDamage();
+            health -= damage;
+            // knockback(collision.gameObject.transform.position);
         }
     }
 
@@ -22,5 +32,4 @@ public class EnemyController : MonoBehaviour
         Vector2 dir = ((Vector2)transform.position - extObjectPos).normalized;
         rb.AddForce(dir * knockbackStrength, ForceMode2D.Impulse);
     }
-
 }
