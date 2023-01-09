@@ -20,16 +20,10 @@ public class ProgressBar : MonoBehaviour
         if(active) {
             timer += Time.deltaTime;
             float fillAmount = 100 / duration;
-            // mask.fillAmount = Mathf.Lerp(0, 100, fillAmount) / 100;
-            // mask.fillAmount = timer;
             mask.fillAmount = Mathf.Lerp(0, 100, timer/(duration*100));
             print(mask.fillAmount);
         }
-        // timer = 0;
     }
-    // public void setCurrent(float current) {
-    //     this.current = current;
-    // }
     public void setDuration(float duration) {
         this.duration = duration;
     }

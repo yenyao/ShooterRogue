@@ -37,7 +37,7 @@ public class GunController : MonoBehaviour
         isReloading = false;
         _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading, true);
         gameObject.tag = "equippedGun";
-        Vector3 angleOffset = new Vector3(0, 0, -90);
+        Vector3 angleOffset = new Vector3(0, 0, 0);
         isEquipabble = false;
         _uimanager.updateInteraction(false);
         gameObject.transform.SetParent(gunPosition.transform);
@@ -48,7 +48,6 @@ public class GunController : MonoBehaviour
 
     public IEnumerator shoot() {
         if(currentAmmo >= 1) {
-            print("shoot");
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
             bulletRB.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
@@ -58,7 +57,6 @@ public class GunController : MonoBehaviour
             yield return new WaitForSeconds(fireRate);
             canFire = true;
         } else {
-            print("reload");
             StartCoroutine(reload());
         }
     }

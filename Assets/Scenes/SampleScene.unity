@@ -243,6 +243,11 @@ MonoBehaviour:
   _stateText: {fileID: 601033424}
   _equipText: {fileID: 382438882}
   progressBar: {fileID: 1950923015}
+--- !u!1 &162701055 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3899381035977421047, guid: bab51d65d38a1a64faa9421d0645de93, type: 3}
+  m_PrefabInstance: {fileID: 369565090}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &206278672
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1080,6 +1085,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 243437544}
     m_Modifications:
+    - target: {fileID: 382242084932763889, guid: 50093cee8aded0e449f1e62e60862232, type: 3}
+      propertyPath: gunPosition
+      value: 
+      objectReference: {fileID: 162701055}
     - target: {fileID: 1380473158585539324, guid: 50093cee8aded0e449f1e62e60862232, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1208,7 +1217,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.87413204
+  m_FillAmount: 0.02
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0

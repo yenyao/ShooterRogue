@@ -25,40 +25,22 @@ public class PlayerController : MonoBehaviour
         _uimanager = GameObject.Find("Canvas").GetComponent<UIManager>();
         shootRoutine = null;
         reloadRoutine = null;
-        // if(GameObject.FindGameObjectWithTag("equippedGun")) {
-        //     equippedGun = GameObject.FindGameObjectWithTag("equippedGun");
-        //     gunController = equippedGun.GetComponent<GunController>();
-        // }
-        // if(GameObject.FindGameObjectWithTag("Gun")) {
-        //     gun = GameObject.FindGameObjectWithTag("Gun");
-        //     gunController = gun.GetComponent<GunController>();
-        // }
         Transform gunPosition = gameObject.transform.Find("GunPosition");
         if(gunPosition.childCount > 0) {
             gun = gunPosition.GetChild(0).gameObject;
-            // equippedGun = gun;
             gunController = gun.GetComponent<GunController>();
         }
         isGunEquipped = true;
-        // if(!gameObject.transform.Find("GunPosition").GetChild(0).gameObject) {
-        //     print("hell");
-        //     gun = GameObject.FindGameObjectWithTag("Gun");
-        //     gunController = gun.GetComponent<GunController>();
-        // }
-        // if(equippedGun) isGunEquipped = true;
     }
 
     void Update()
     {
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         playerMovement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        print(playerMovement);
         canGunFire = isGunEquipped && gunController.getCanFire();
-        // print(canGunFire);
         isGunReloading = isGunEquipped && gunController.getIsReloading();
         isEquipabble = gunController.getIsEquippable();
         _uimanager.updateStates(canGunFire, isGunReloading, isEquipabble);
-        // print(!isGunReloading);
         if(Input.GetButtonDown("Fire1") && canGunFire && !isGunReloading) {
             shootRoutine = StartCoroutine(gunController.shoot());
         }
