@@ -7,11 +7,20 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI _ammoText;
     public TextMeshProUGUI _stateText;
     public TextMeshProUGUI _equipText;
+    public ProgressBar progressBar;
     public void updateAmmo(int currentAmmo, int maxAmmo, bool isReloading, bool isGunEquipped) {
         string ammoState = currentAmmo.ToString() + " | " + maxAmmo.ToString();
-        if(isReloading) ammoState = "Reloading";
+        if(isReloading) {
+            ammoState = "Reloading";
+            progressBar.showReloadBar(isReloading);
+        }
         if(!isGunEquipped) ammoState = "";
+        progressBar.showReloadBar(isReloading);
         _ammoText.SetText(ammoState);
+    }
+
+    public void setProgressBarTimer(float duration) {
+        progressBar.setDuration(duration);
     }
 
     public void updateInteraction(bool equip) {

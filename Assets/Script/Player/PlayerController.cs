@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
     {
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         playerMovement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        print(playerMovement);
         canGunFire = isGunEquipped && gunController.getCanFire();
         // print(canGunFire);
         isGunReloading = isGunEquipped && gunController.getIsReloading();

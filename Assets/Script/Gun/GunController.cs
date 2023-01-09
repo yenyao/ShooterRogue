@@ -66,6 +66,7 @@ public class GunController : MonoBehaviour
     public IEnumerator reload() {
         isReloading = true;
         _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading, true);
+        _uimanager.setProgressBarTimer(reloadRate);
         yield return new WaitForSeconds(reloadRate);
         var diffAmmo = maxMagazineAmmo - currentAmmo;
         totalAmmo -= diffAmmo;
