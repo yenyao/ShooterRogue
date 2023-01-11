@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
         _equipText.SetText(interactionText);
     }
 
-    public void updateStates(bool canFire, bool isReloading, bool isEquipabble) {
-        _stateText.SetText("canFire: " + canFire + "\nisReloading: " + isReloading + "\nisEquipabble: " + isEquipabble);
+    public void updateStates(bool canFire, bool isReloading, bool isEquipabble, int numGuns, string equippedGun) {
+        _stateText.SetText("canFire: " + canFire + "\nisReloading: " + isReloading + "\nisEquipabble: " + isEquipabble + "\nnumGuns: " + numGuns + "\nequippedGun: " + equippedGun);
     }
 }
