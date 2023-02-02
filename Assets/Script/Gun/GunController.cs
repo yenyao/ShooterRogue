@@ -7,35 +7,47 @@ public class GunController : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject gunPosition;
     [SerializeField] private PlayerController playerController;
-    private bool canFire = true;
-    private bool isReloading = false;
     [SerializeField] private float fireRate;
     [SerializeField] private float reloadRate;
+    [SerializeField] private float accuracy;
+    [SerializeField] private int maxMagazineAmmo = 10;
+    [SerializeField] private int totalAmmo = 50;
+    [SerializeField] private float bulletForce = 20f;
+    private bool _canFire = true;
+    private bool _isReloading = false;
     private float firedTime;
     private float reloadTime;
     private int currentAmmo;
     private bool isEquipabble = true;
-    [SerializeField] private int maxMagazineAmmo = 10;
-    [SerializeField] private int totalAmmo = 50;
-    [SerializeField] private float bulletForce = 20f;
+    private float _accuracyMod;
+    public float accuracyMod {
+        get { return _accuracyMod; }
+        set { _accuracyMod = value; }
+    }
     private UIManager _uimanager;
     void Start() {
         currentAmmo = maxMagazineAmmo;
         _uimanager = GameObject.Find("Canvas").GetComponent<UIManager>();
-        _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading, isEquipabble);
+        print(currentAmmo);
+        _uimanager.updateAmmo(currentAmmo, totalAmmo, _isReloading, isEquipabble);
     }
 
     void OnTriggerEnter2D(Collider2D collider) {
         if(collider.tag == "Player" && isEquipabble) {
             equip();
-            canFire = true;
+            _canFire = true;
         }
     }
+
+    public void updateAmmoUI(bool isGunEquipped) {
+        _uimanager.updateAmmo(currentAmmo, totalAmmo, _isReloading, isGunEquipped);
+    }
+
     public void equip() {
         Destroy(GetComponent<BoxCollider2D>());
-        canFire = true;
-        isReloading = false;
-        _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading, true);
+        _canFire = true;
+        _isReloading = false;
+        _uimanager.updateAmmo(currentAmmo, totalAmmo, _isReloading, true);
         gameObject.tag = "equippedGun";
         Vector3 angleOffset = new Vector3(0, 0, 0);
         isEquipabble = false;
@@ -43,39 +55,42 @@ public class GunController : MonoBehaviour
         gameObject.transform.SetParent(gunPosition.transform);
         gameObject.transform.position = gunPosition.transform.position;
         transform.eulerAngles = transform.parent.eulerAngles + angleOffset;
-        playerController.setIsGunEquipped(true);
+        // playerController.setIsGunEquipped(true);
+        playerController.isGunEquipped = true;
     }
 
     public IEnumerator shoot() {
         if(currentAmmo >= 1) {
+            Vector3 gunAccuracy = new Vector3(0, Random.Range(-accuracy/2, accuracy/2), 0) * accuracyMod;
+            print(accuracyMod);
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
-            bulletRB.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
+            bulletRB.AddForce(firePoint.up * bulletForce + gunAccuracy, ForceMode2D.Impulse);
             currentAmmo--;
-            canFire = false;
-            _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading, true);
+            _canFire = false;
+            _uimanager.updateAmmo(currentAmmo, totalAmmo, _isReloading, true);
             yield return new WaitForSeconds(fireRate);
-            canFire = true;
+            _canFire = true;
         } else {
             StartCoroutine(reload());
         }
     }
 
     public IEnumerator reload() {
-        isReloading = true;
-        _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading, true);
+        _isReloading = true;
+        _uimanager.updateAmmo(currentAmmo, totalAmmo, _isReloading, true);
         _uimanager.setProgressBarTimer(reloadRate);
         yield return new WaitForSeconds(reloadRate);
         var diffAmmo = maxMagazineAmmo - currentAmmo;
         totalAmmo -= diffAmmo;
         currentAmmo = maxMagazineAmmo;
-        isReloading = false;
-        _uimanager.updateAmmo(currentAmmo, totalAmmo, isReloading, true);
-        canFire = true;
+        _isReloading = false;
+        _uimanager.updateAmmo(currentAmmo, totalAmmo, _isReloading, true);
+        _canFire = true;
     }
     public IEnumerator throwGun() {
-        canFire = false;
-        isReloading = false;
+        _canFire = false;
+        _isReloading = false;
         isEquipabble = false;
         transform.parent = null;
         gameObject.tag = "Gun";
@@ -87,8 +102,8 @@ public class GunController : MonoBehaviour
         PhysicsMaterial2D mat = Resources.Load("Bouncy", typeof(PhysicsMaterial2D)) as PhysicsMaterial2D;
         gameObject.GetComponent<BoxCollider2D>().sharedMaterial = mat;
         gunRB.velocity = firePoint.up * bulletForce;
-        playerController.setIsGunEquipped(false);
-        _uimanager.updateAmmo(0, 0, false, false);
+        // playerController.setIsGunEquipped(false);
+        // playerController.isGunEquipped = false;
         yield return new WaitForSeconds(1);
         gunCollider.isTrigger = true;
         isEquipabble = true;
@@ -96,12 +111,11 @@ public class GunController : MonoBehaviour
         Destroy(GetComponent<Rigidbody2D>());
         gameObject.GetComponent<BoxCollider2D>().sharedMaterial = null;
     }
-
     public bool getCanFire() {
-        return canFire;
+        return _canFire;
     }
     public bool getIsReloading() {
-        return isReloading;
+        return _isReloading;
     }
     public bool getIsEquippable() {
         return isEquipabble;

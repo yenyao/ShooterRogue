@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI _equipText;
     public ProgressBar progressBar;
     public void updateAmmo(int currentAmmo, int maxAmmo, bool isReloading, bool isGunEquipped) {
+        print("UI: " + isGunEquipped);
         string ammoState = currentAmmo.ToString() + " | " + maxAmmo.ToString();
         if(isReloading) {
             ammoState = "Reloading";
