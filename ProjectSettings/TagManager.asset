@@ -7,6 +7,7 @@ TagManager:
   - Gun
   - equippedGun
   - Bullet
+  - Wall
   layers:
   - Default
   - TransparentFX
